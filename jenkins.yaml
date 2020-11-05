@@ -1,0 +1,65 @@
+jenkins:
+  systemMessage: "Edelia: ${CASC_JENKINS_CONFIG} Jenkins configured automatically by Jenkins Configuration as Code plugin\n\n"
+  globalNodeProperties:
+  - envVars:
+      env:
+      - key: VARIABLE1
+        value: foo
+      - key: VARIABLE2
+        value: bar
+        
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "hello"
+          password: "admin"
+  authorizationStrategy: loggedInUsersCanDoAnything
+  clouds:
+  - kubernetes:
+      connectTimeout: 5
+      containerCapStr: "10"
+      credentialsId: "my-k8s-token"
+      serverUrl: "https://k8s.api.example.com"
+      skipTlsVerify: true
+      jenkinsUrl: "https://jenkins.example.com/jenkins"
+      maxRequestsPerHostStr: "32"
+      name: "kubernetes"
+      readTimeout: 15
+      templates:
+      - containers:
+        - args: "^${computer.jnlpmac} ^${computer.name}"
+          image: "registry.access.redhat.com/openshift3/jenkins-slave-maven-rhel7"
+          livenessProbe:
+            failureThreshold: 0
+            initialDelaySeconds: 0
+            periodSeconds: 0
+            successThreshold: 0
+            timeoutSeconds: 0
+          name: "jnlp"
+          workingDir: "/tmp"
+        hostNetwork: false
+        label: "maven"
+        name: "maven"
+        workspaceVolume:
+          emptyDirWorkspaceVolume:
+            memory: false
+        yamlMergeStrategy: "override"
+      - containers:
+        - args: "^${computer.jnlpmac} ^${computer.name}"
+          image: "registry.access.redhat.com/openshift3/jenkins-agent-nodejs-8-rhel7"
+          livenessProbe:
+            failureThreshold: 0
+            initialDelaySeconds: 0
+            periodSeconds: 0
+            successThreshold: 0
+            timeoutSeconds: 0
+          name: "jnlp"
+          workingDir: "/tmp"
+        hostNetwork: false
+        label: "nodejs"
+        name: "nodejs"
+        workspaceVolume:
+          emptyDirWorkspaceVolume:
+            memory: false
+        yamlMergeStrategy: "override"

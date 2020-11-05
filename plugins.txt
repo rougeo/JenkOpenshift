@@ -1,0 +1,17 @@
+simple-theme-plugin
+htmlpublisher 
+slack 
+mailer 
+email-ext 
+ssh-slaves
+configuration-as-code:1.46
+greenballs
+metrics
+prometheus:2.0.8
+kubernetes
+blueocean:1.24.3
+pam-auth:1.6
+openshift-client:1.0.34
+openshift-login:1.0.26
+openshift-sync:1.0.45
+build-timeout:latest
